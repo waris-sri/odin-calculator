@@ -20,6 +20,12 @@ buttons.addEventListener("click", (e) => {
   let btnVal = btn.innerText;
   switch (type) {
     case "number":
+      if (justCalculated) {
+        clear();
+        hasPoint = false;
+        justCalculated = false;
+        result.innerText = "0";
+      }
       if (btnVal === "±") {
         result.innerText *= -1;
       } else {
@@ -49,7 +55,6 @@ buttons.addEventListener("click", (e) => {
       result.innerText = calculate(a, b, operator);
       hasPoint = result.innerText.includes(".");
       justCalculated = true;
-      // TODO after pressing equal, if number is pressed, reset all variables and operators; start anew
       break;
     case "clear-all":
       hasPoint = false;
