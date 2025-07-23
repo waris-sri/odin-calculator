@@ -5,34 +5,30 @@ let operator = ''
 const buttons = document.querySelector('#buttons')
 const result = document.querySelector('#result')
 const note = document.querySelector('#note')
-const nsbp = '\xa0'
+const nbsp = '\xa0'
 
 window.addEventListener('DOMContentLoaded', () => {
   result.innerText = '0'
-  note.innerText = nsbp // non-breaking space
+  note.innerText = nbsp // non-breaking space
 })
 
 let hasPoint = false
-let isFirstCalculation = false
+let hasCalculated = false
 function handleInput(type, btnVal) {
   switch (type) {
     case 'number':
-      if (isFirstCalculation) {
+      if (hasCalculated) {
         clear()
         hasPoint = false
-        isFirstCalculation = false
+        hasCalculated = false
         result.innerText = '0'
-        note.innerText = nsbp
+        note.innerText = nbsp
       }
-      if (btnVal === '±') {
-        result.innerText *= -1
-      } else {
-        if (result.innerText === '0') result.innerText = btnVal
-        else result.innerText += btnVal
-      }
+      if (result.innerText === '0') result.innerText = btnVal
+      else result.innerText += btnVal
       break
     case 'operator':
-      isFirstCalculation = false // this fixes the entire operation flow bugs
+      hasCalculated = false // this fixes the entire operation flow bugs
       hasPoint = false
       // continuous operations without pressing equal button
       if (a !== 0 && operator) {
@@ -53,7 +49,7 @@ function handleInput(type, btnVal) {
       }
       break
     case 'equal':
-      if (!isFirstCalculation) {
+      if (!hasCalculated) {
         b = +result.innerText
         if (operator !== '') {
           note.innerText = `${a}${operator}${b}`
@@ -70,18 +66,34 @@ function handleInput(type, btnVal) {
       }
       result.innerText = calculate(a, b, operator)
       hasPoint = result.innerText.includes('.')
-      isFirstCalculation = true
+      hasCalculated = true
       break
     case 'clear-all':
       clear()
       result.innerText = '0'
       hasPoint = false
-      isFirstCalculation = false
+      hasCalculated = false
       break
     case 'backspace':
       result.innerText = result.innerText.slice(0, -1)
       if (result.innerText === '') result.innerText = '0'
       if (!result.innerText.includes('.')) hasPoint = false
+      break
+    case 'sign':
+      if (!hasCalculated) {
+        result.innerText *= -1
+        b = +result.innerText
+        result.innerText = b
+      } else {
+        result.innerText *= -1
+        a = +result.innerText
+        result.innerText = a
+        if (operator !== '') {
+          note.innerText = `${a}${operator}${b}`
+        } else {
+          note.innerText = `${a}`
+        }
+      }
       break
   }
 }
@@ -143,5 +155,5 @@ function clear() {
   a = 0
   b = 0
   operator = ''
-  note.innerText = nsbp
+  note.innerText = nbsp
 }
