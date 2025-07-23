@@ -13,14 +13,14 @@ window.addEventListener('DOMContentLoaded', () => {
 })
 
 let hasPoint = false
-let hasCalculated = false
+let shouldClearOnNextInput = false
 function handleInput(type, btnVal) {
   switch (type) {
     case 'number':
-      if (hasCalculated) {
+      if (shouldClearOnNextInput) {
         clear()
         hasPoint = false
-        hasCalculated = false
+        shouldClearOnNextInput = false
         result.innerText = '0'
         note.innerText = nbsp
       }
@@ -28,7 +28,7 @@ function handleInput(type, btnVal) {
       else result.innerText += btnVal
       break
     case 'operator':
-      hasCalculated = false // this fixes the entire operation flow bugs
+      shouldClearOnNextInput = false // this fixes the entire operation flow bugs
       hasPoint = false
       // continuous operations without pressing equal button
       if (a !== 0 && operator) {
@@ -49,7 +49,7 @@ function handleInput(type, btnVal) {
       }
       break
     case 'equal':
-      if (!hasCalculated) {
+      if (!shouldClearOnNextInput) {
         b = +result.innerText
         if (operator !== '') {
           note.innerText = `${a}${operator}${b}`
@@ -66,13 +66,13 @@ function handleInput(type, btnVal) {
       }
       result.innerText = calculate(a, b, operator)
       hasPoint = result.innerText.includes('.')
-      hasCalculated = true
+      shouldClearOnNextInput = true
       break
     case 'clear-all':
       clear()
       result.innerText = '0'
       hasPoint = false
-      hasCalculated = false
+      shouldClearOnNextInput = false
       break
     case 'backspace':
       result.innerText = result.innerText.slice(0, -1)
@@ -80,7 +80,7 @@ function handleInput(type, btnVal) {
       if (!result.innerText.includes('.')) hasPoint = false
       break
     case 'sign':
-      if (!hasCalculated) {
+      if (!shouldClearOnNextInput) {
         result.innerText *= -1
         b = +result.innerText
         result.innerText = b
