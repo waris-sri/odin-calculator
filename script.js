@@ -1,104 +1,114 @@
-let a = 0;
-let b = 0;
-let operator = "";
+let a = 0
+let b = 0
+let operator = ""
 
-const buttons = document.querySelector("#buttons");
-const result = document.querySelector("#result");
-const note = document.querySelector("#note");
+const buttons = document.querySelector("#buttons")
+const result = document.querySelector("#result")
+const note = document.querySelector("#note")
+const nsbp = "\xa0"
 
 window.addEventListener("DOMContentLoaded", () => {
-  result.innerText = "0";
-  note.innerText = "\xa0"; // non-breaking space
-});
+  result.innerText = "0"
+  note.innerText = nsbp // non-breaking space
+})
 
-// TODO add note on calculator display
-let hasPoint = false;
-let justCalculated = false;
+// TODO add keyboard support (AC is ESC)
+
+let hasPoint = false
+let isFirstCalculation = false
 buttons.addEventListener("click", (e) => {
-  let btn = e.target;
-  let type = btn.className;
-  let btnVal = btn.innerText;
+  let btn = e.target
+  let type = btn.className
+  let btnVal = btn.innerText
   switch (type) {
     case "number":
-      if (justCalculated) {
-        clear();
-        hasPoint = false;
-        justCalculated = false;
-        result.innerText = "0";
+      if (isFirstCalculation) {
+        clear()
+        hasPoint = false
+        isFirstCalculation = false
+        result.innerText = "0"
+        note.innerText = nsbp
       }
       if (btnVal === "±") {
-        result.innerText *= -1;
+        result.innerText *= -1
       } else {
-        if (result.innerText === "0") result.innerText = btnVal;
-        else result.innerText += btnVal;
+        if (result.innerText === "0") result.innerText = btnVal
+        else result.innerText += btnVal
       }
-      break;
+      break
     case "operator":
-      justCalculated = false; // this fixes the entire operation flow issues
-      hasPoint = false;
-      a = +result.innerText;
-      operator = btnVal;
-      result.innerText = "0";
-      break;
+      isFirstCalculation = false // this fixes the entire operation flow bugs
+      hasPoint = false
+      // continuous operations without pressing equal button
+      if (a !== 0 && operator) {
+        b = +result.innerText
+        result.innerText = calculate(a, b, operator)
+        a = +result.innerText
+      } else {
+        a = +result.innerText
+      }
+      operator = btnVal
+      note.innerText = `${a}${btnVal}`
+      result.innerText = "0"
+      break
     case "decimal":
       if (!hasPoint) {
-        result.innerText += btnVal;
-        hasPoint = true;
+        result.innerText += btnVal
+        hasPoint = true
       }
-      break;
+      break
     case "equal":
-      if (!justCalculated) {
-        b = +result.innerText;
+      if (!isFirstCalculation) {
+        b = +result.innerText
+        if (operator !== "") {
+          note.innerText = `${a}${operator}${b}`
+        } else {
+          note.innerText = `${b}`
+        }
       } else {
-        a = +result.innerText; // as b should stay the same
+        a = +result.innerText // as `b` should stay the same
+        if (operator !== "") {
+          note.innerText = `${a}${operator}${b}`
+        } else {
+          note.innerText = `${a}`
+        }
       }
-      result.innerText = calculate(a, b, operator);
-      hasPoint = result.innerText.includes(".");
-      justCalculated = true;
-      break;
+      result.innerText = calculate(a, b, operator)
+      hasPoint = result.innerText.includes(".")
+      isFirstCalculation = true
+      break
     case "clear-all":
-      hasPoint = false;
-      result.innerText = "0";
-      clear();
-      break;
+      clear()
+      result.innerText = "0"
+      hasPoint = false
+      isFirstCalculation = false
+      break
     case "backspace":
-      result.innerText = result.innerText.slice(0, -1);
-      if (result.innerText === "") result.innerText = "0";
-      if (!result.innerText.includes(".")) hasPoint = false; // reset to false when . got deleted
-      break;
+      result.innerText = result.innerText.slice(0, -1)
+      if (result.innerText === "") result.innerText = "0"
+      if (!result.innerText.includes(".")) hasPoint = false
+      break
   }
-});
-
-function add(a, b) {
-  return a + b;
-}
-function subtract(a, b) {
-  return a - b;
-}
-function multiply(a, b) {
-  return a * b;
-}
-function divide(a, b) {
-  return a / b;
-}
+})
 
 function calculate(a, b, operator) {
   switch (operator) {
     case "+":
-      return add(a, b);
+      return a + b
     case "–":
-      return subtract(a, b);
+      return a - b
     case "×":
-      return multiply(a, b);
+      return a * b
     case "÷":
-      return divide(a, b);
+      return a / b
     default:
-      return a;
+      return +result.innerText
   }
 }
 
 function clear() {
-  a = 0;
-  b = 0;
-  operator = "";
+  a = 0
+  b = 0
+  operator = ""
+  note.innerText = nsbp
 }

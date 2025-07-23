@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap");
+
 * {
   font-family: "Source Sans 3", sans-serif;
   font-optical-sizing: auto;
@@ -36,9 +37,10 @@ h1 {
 #buttons {
   pointer-events: none;
 }
+
 button {
   pointer-events: auto;
-  transition: transform ease 0.2s;
+  transition: transform cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
   font-size: 1.5rem;
   border: 0;
   border-radius: 999px;
@@ -52,11 +54,13 @@ button {
   -webkit-user-select: none;
   -o-user-select: none;
 }
+
 button:hover {
   cursor: pointer;
 }
+
 button:active {
-  transform: scale(0.9);
+  transform: scale(0.95);
 }
 
 #container {
@@ -80,6 +84,7 @@ button:active {
   background-color: #c6d4be;
   color: #55634c;
 }
+
 #result,
 #note {
   font-family: "Share Tech Mono", monospace;
@@ -87,12 +92,14 @@ button:active {
   text-wrap: balance;
   overflow-wrap: break-word;
 }
+
 #result {
   font-size: 2.5rem;
   line-height: 1;
   margin-top: 6px;
   letter-spacing: -2px;
 }
+
 #note {
   color: #8e9988;
 }
@@ -102,11 +109,13 @@ button:active {
   color: #e8e3c3;
   flex-shrink: 0;
 }
+
 .equal {
   background-color: #ce4a1c;
   color: #e8e3c3;
   flex: 2.71;
 }
+
 .number,
 .decimal,
 .clear-all,
@@ -115,7 +124,7 @@ button:active {
   flex-shrink: 0;
 }
 
-#buttons > div {
+#buttons>div {
   display: flex;
   flex: 1;
   justify-content: center;
