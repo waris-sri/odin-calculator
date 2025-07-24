@@ -53,6 +53,7 @@ button {
   -khtml-user-select: none;
   -webkit-user-select: none;
   -o-user-select: none;
+  color: var(--main-text)
 }
 
 button:hover {
