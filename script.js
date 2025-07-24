@@ -137,18 +137,24 @@ document.addEventListener('keydown', (e) => {
 })
 
 function calculate(a, b, operator) {
+  let res
   switch (operator) {
     case '+':
-      return a + b
+      res = a + b
+      break
     case '−':
-      return a - b
+      res = a - b
+      break
     case '×':
-      return a * b
+      res = a * b
+      break
     case '÷':
-      return a / b
+      res = a / b
+      break
     default:
       return +result.innerText
   }
+  return Math.round(res * 1000000000) / 1000000000 // to fix floating point precision
 }
 
 function clear() {
