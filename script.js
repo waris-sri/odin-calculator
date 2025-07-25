@@ -24,7 +24,8 @@ function handleInput(type, btnVal) {
         result.innerText = '0'
         note.innerText = nbsp
       }
-      if (result.innerText === '0') result.innerText = btnVal
+      if (result.innerText === '0')
+        result.innerText = btnVal
       else result.innerText += btnVal
       break
     case 'operator':
@@ -35,10 +36,8 @@ function handleInput(type, btnVal) {
         b = +result.innerText
         result.innerText = calculate(a, b, operator)
         a = +result.innerText
-      } else {
-        a = +result.innerText
       }
-      operator = btnVal
+      else { a = +result.innerText } operator = btnVal
       note.innerText = `${a}${btnVal}`
       result.innerText = '0'
       break
@@ -53,14 +52,16 @@ function handleInput(type, btnVal) {
         b = +result.innerText
         if (operator !== '') {
           note.innerText = `${a}${operator}${b}`
-        } else {
+        }
+        else {
           note.innerText = `${b}`
         }
       } else {
         a = +result.innerText // as `b` should stay the same
         if (operator !== '') {
           note.innerText = `${a}${operator}${b}`
-        } else {
+        }
+        else {
           note.innerText = `${a}`
         }
       }
@@ -90,7 +91,8 @@ function handleInput(type, btnVal) {
         result.innerText = a
         if (operator !== '') {
           note.innerText = `${a}${operator}${b}`
-        } else {
+        }
+        else {
           note.innerText = `${a}`
         }
       }
@@ -114,24 +116,28 @@ document.addEventListener('keydown', (e) => {
   if (isDigit.test(key)) {
     type = 'number'
     btnVal = key
-  } else if (operators.includes(key)) {
+  }
+  else if (operators.includes(key)) {
     type = 'operator'
     btnVal = key === '+' ? '+' : key === '-' ? '−' : key === '*' ? '×' : '÷'
-  } else if (key === '.') {
+  }
+  else if (key === '.') {
     type = 'decimal'
     btnVal = key
-  } else if (key === 'Enter' || key === '=') {
+  }
+  else if (key === 'Enter' || key === '=') {
     type = 'equal'
     btnVal = '='
-  } else if (key === 'Escape' || key.toLowerCase() === 'c') {
+  }
+  else if (key === 'Escape' || key.toLowerCase() === 'c') {
     type = 'clear-all'
     btnVal = 'AC'
-  } else if (key === 'Backspace') {
+  }
+  else if (key === 'Backspace') {
     type = 'backspace'
     btnVal = '⌫'
-  } else {
-    return
   }
+  else { return }
   e.preventDefault()
   handleInput(type, btnVal)
 })
@@ -151,8 +157,7 @@ function calculate(a, b, operator) {
     case '÷':
       res = a / b
       break
-    default:
-      return +result.innerText
+    default: return +result.innerText
   }
   return Math.round(res * 1000000000) / 1000000000 // to fix floating point precision
 }
